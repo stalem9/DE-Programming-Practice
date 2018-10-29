@@ -142,17 +142,20 @@ class Page(tk.Frame):
             ax1.plot(x, y4, linewidth=1.0)
 
             f.legend(("Euler Method", "Improved Euler Method", "Runge-Kutta Method", "Exact solution of IVP"))
-
-            ax2 = f.add_axes([0.1, 0.1, 0.8, 0.35], xlim=(0, n), ylim=(-1, 1), title="Errors")
             er1 = numpy.zeros([n])
             er2 = numpy.zeros([n])
             er3 = numpy.zeros([n])
             step = numpy.zeros([n])
+            ma, mi = 0, 0
             for i in range(0, n):
                 er1[i] = y4[i] - y1[i]
                 er2[i] = y4[i] - y2[i]
                 er3[i] = y4[i] - y3[i]
                 step[i] = i
+                ma = max(ma, er1[i], er2[i], er3[i])
+                mi = min(mi, er1[i], er2[i], er3[i])
+            ax2 = f.add_axes([0.1, 0.1, 0.8, 0.35], xlim=(0, n), ylim=(mi-0.5, ma+0.5), title="Errors")
+
 
             ax2.plot(step, er1, linewidth=1.0)
             ax2.plot(step, er2, linewidth=1.0)
